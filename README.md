@@ -10,4 +10,4 @@ Caitlin Dreisbach: exploratory data analysis, data cleanning and transformation,
 Yi Hao: implementation of the KNN non-parametric approach.
 
 # Commenting and Evaluation of the Code
-Code comemnting and narration is within the R document.
+Code commenting and narration is within the R document.
