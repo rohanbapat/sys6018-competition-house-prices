@@ -265,50 +265,51 @@ nrow(train.data) #number of rows are 1024
 nrow(test.data) #number of rows
 
 ##Build and evaluate KNN model using all the variables-- Model 1
-model_knn <- IBk(SalePrice~., data=train.data, control=Weka_control(K=10, X=TRUE))
-model_knn
-summary(model_knn)
+model_knn <- IBk(SalePrice~., data=train.data, control=Weka_control(K=10, X=TRUE)) #create the model with K=10
+model_knn #view the knn model
+summary(model_knn) #provides a summary of the testing model
+#evaluation function of the model
 evaluate_Weka_classifier(model_knn,test.data, numFolds=10, complexity= FALSE, seed=1, class=TRUE)
-
+                  
 #Cross-validation for IBk
-model_knn <- IBk(SalePrice~., data=master.train, control=Weka_control(K=15, X=TRUE))
+model_knn <- IBk(SalePrice~., data=master.train, control=Weka_control(K=15, X=TRUE)) #set k=15 using the master.train file
 evaluate_Weka_classifier(model_knn,master.train, numFolds=2, complexity= FALSE, seed=1, class=TRUE)
 
 #prediction
-prediction_knn <-predict(model_knn, master.test)
+prediction_knn <-predict(model_knn, master.test) #creates prediction of sale price using the KNN model
 summary(prediction_knn)
 
 #write to csv file
-kaggle.submission = cbind(test_data['Id'], prediction_knn)
-colnames(kaggle.submission) = c("Id", "SalePrice")
-write.csv(kaggle.submission, file = "Team1-4_kaggle_house_submission3.csv", row.names = FALSE)
+kaggle.submission = cbind(test_data['Id'], prediction_knn) #writes predictions with an ID column to a new object
+colnames(kaggle.submission) = c("Id", "SalePrice") #establishes column names for kaggle submission
+write.csv(kaggle.submission, file = "Team1-4_kaggle_house_submission3.csv", row.names = FALSE) #writes to a CSV
 
 ##Build and evaluate KNN model using most corelated variables-- Model 2
 master.train2 <- master.train[,c('MSZoning','LotFrontage','LotArea','Street','Utilities','Neighborhood','OverallCond','YearBuilt','CentralAir','Fireplaces','GarageArea','GarageCars','PoolArea','YrSold','SaleType','SaleCondition','OverallQual','SalePrice')]
 master.pred2 <- master.test[,c('MSZoning','LotFrontage','LotArea','Street','Utilities','Neighborhood','OverallCond','YearBuilt','CentralAir','Fireplaces','GarageArea','GarageCars','PoolArea','YrSold','SaleType','SaleCondition','OverallQual')]
 
 #split the train data 50-50 into train and valid
-library("caret")
-set.seed(500)
+library("caret") 
+set.seed(500) #set the number of samples at 500
 inTrain2<-createDataPartition(y=master.train2$SalePrice, p=0.50, list=FALSE)
-train.data2<-master.train2[inTrain2,]
-test.data2<-master.train2[-inTrain2,]
-nrow(train.data2)
+train.data2<-master.train2[inTrain2,] #subet the data by selected rows
+test.data2<-master.train2[-inTrain2,] #subet the data by all that was not included in the first subset
+nrow(train.data2) #number of rows calculated
 nrow(test.data2)
 
 ##Build and evaluate KNN model using all the variables-- Model 1
-model_knn2 <- IBk(SalePrice~., data=train.data2, control=Weka_control(K=20, X=TRUE))
-model_knn2
-summary(model_knn2)
-evaluate_Weka_classifier(model_knn,test.data2, numFolds=0, complexity= FALSE, seed=1, class=TRUE)
+model_knn2 <- IBk(SalePrice~., data=train.data2, control=Weka_control(K=20, X=TRUE)) #set K=20
+model_knn2 #producing the second KNN model
+summary(model_knn2) #providing a summary of the model
+evaluate_Weka_classifier(model_knn,test.data2, numFolds=0, complexity= FALSE, seed=1, class=TRUE) #evaluation function
 
 #Cross-validation for IBk
-model_knn2 <- IBk(SalePrice~., data=master.train2)
+model_knn2 <- IBk(SalePrice~., data=master.train2) #cross validating variables in model to training set 2
 evaluate_Weka_classifier(model_knn,master.train2, numFolds=0, complexity= FALSE, seed=1, class=TRUE)
 
 #prediction
 prediction_knn2 <-predict(model_knn2, master.pred2) #gives prediction of sale price for KNN Model
-summary(prediction_knn2)
+summary(prediction_knn2) #provides a summary of second model
 
 #write to csv file
 kaggle.submission2 = cbind(master.test[,'Id'], prediction_knn2)
