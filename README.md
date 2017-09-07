@@ -14,10 +14,10 @@ Yi Hao: data cleaning, implementation of the KNN non-parametric approach.
 Parametric approaches:
 
     Linear model: "Competition_1-4_house_price_lm3.csv"
-        Performance score/RMSE: 0.95004
+        Performance score/RMSE: 0.129
         
     Random Forrest: "rb2te_house_price_rflmensemble4.csv"
-        Performance score/RMSE: 0.70903
+        Performance score/RMSE: 0.15
     
 Non-parametric approaches:
 
